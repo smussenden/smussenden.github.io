@@ -39,4 +39,7 @@ vignettes/*.pdf
 .Renviron
 
 # DS STORE
-.DS_Store
+*.DS_Store
+
+# Ignore camtasiafiles
+labs/labs_01/lab_01_video/*
