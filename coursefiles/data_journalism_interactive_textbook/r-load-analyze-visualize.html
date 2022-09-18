@@ -219,6 +219,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./r_aggregates_filters.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Mutuating, Aggregates, Filters</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./appendix-math.html" class="sidebar-item-text sidebar-link">(APPENDIX) Appendix</a>
   </div>
 </li>
@@ -695,7 +700,7 @@ group_by Group the data by a categorical variable </code></pre>
 <span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Average Salary"</span>,</span>
 <span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Race / Ethnicity"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="r-load-analyze-visualize_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+<p><img src="r-load-analyze-visualize_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>This is a basic chart using ggplot. To break down the code: - These lines: Race %&gt;% ggplot(aes(x = Race, y = Avg_Salary, fill = Avg_Salary)) + – Uses the Race table, calls the ggplot program, assigns the x axis to Race, y axis to Avg_Salary and fills the color according to Avg_Salary - These lines: geom_col(position = “dodge”) + theme(legend.position = “none”) + – creates a chart of columns, and removes a legend box. - These lines: labs(title = Assign the headline and captions.</p>
