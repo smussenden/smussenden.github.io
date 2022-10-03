@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data Journalism with R and the Tidyverse - 15&nbsp; Visualizing your data for reporting</title>
+<title>Data Journalism with R and the Tidyverse - 16&nbsp; Visualizing your data for reporting</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -94,7 +94,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./appendix-math.html" rel="next">
-<link href="./r_aggregates_filters.html" rel="prev">
+<link href="./r-mutating.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing your data for reporting</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Visualizing your data for reporting</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -229,7 +229,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./r_visualizing_reporting.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing your data for reporting</span></a>
+  <a href="./r-mutating.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Mutating data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r_visualizing_reporting.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Visualizing your data for reporting</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -246,10 +251,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-to-use-visualization" id="toc-why-to-use-visualization" class="nav-link active" data-scroll-target="#why-to-use-visualization"><span class="toc-section-number">15.0.1</span>  Why to use visualization</a></li>
-  <li><a href="#call-data" id="toc-call-data" class="nav-link" data-scroll-target="#call-data"><span class="toc-section-number">15.0.2</span>  311 Call Data</a></li>
-  <li><a href="#bar-charts" id="toc-bar-charts" class="nav-link" data-scroll-target="#bar-charts"><span class="toc-section-number">15.0.3</span>  Bar charts</a></li>
-  <li><a href="#line-charts" id="toc-line-charts" class="nav-link" data-scroll-target="#line-charts"><span class="toc-section-number">15.1</span>  Line charts</a></li>
+  <li><a href="#why-to-use-visualization" id="toc-why-to-use-visualization" class="nav-link active" data-scroll-target="#why-to-use-visualization"><span class="toc-section-number">16.0.1</span>  Why to use visualization</a></li>
+  <li><a href="#call-data" id="toc-call-data" class="nav-link" data-scroll-target="#call-data"><span class="toc-section-number">16.0.2</span>  311 Call Data</a></li>
+  <li><a href="#bar-charts" id="toc-bar-charts" class="nav-link" data-scroll-target="#bar-charts"><span class="toc-section-number">16.0.3</span>  Bar charts</a></li>
+  <li><a href="#line-charts" id="toc-line-charts" class="nav-link" data-scroll-target="#line-charts"><span class="toc-section-number">16.1</span>  Line charts</a></li>
   </ul>
 </nav>
     </div>
@@ -258,7 +263,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing your data for reporting</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Visualizing your data for reporting</span></h1>
 </div>
 
 
@@ -272,8 +277,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="why-to-use-visualization" class="level3" data-number="15.0.1">
-<h3 data-number="15.0.1" class="anchored" data-anchor-id="why-to-use-visualization"><span class="header-section-number">15.0.1</span> Why to use visualization</h3>
+<section id="why-to-use-visualization" class="level3" data-number="16.0.1">
+<h3 data-number="16.0.1" class="anchored" data-anchor-id="why-to-use-visualization"><span class="header-section-number">16.0.1</span> Why to use visualization</h3>
 <p>Before you launch into trying to chart or map your data, take a minute to think about the many roles that static and interactive graphic elements play in your journalism.</p>
 <p>Sometimes, you can help yourself and your story by just creating a quick chart, which helps you see patterns in the data that wouldn’t otherwise surface. In the reporting phase, visualizations can:</p>
 <ul>
@@ -305,8 +310,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="call-data" class="level3" data-number="15.0.2">
-<h3 data-number="15.0.2" class="anchored" data-anchor-id="call-data"><span class="header-section-number">15.0.2</span> 311 Call Data</h3>
+<section id="call-data" class="level3" data-number="16.0.2">
+<h3 data-number="16.0.2" class="anchored" data-anchor-id="call-data"><span class="header-section-number">16.0.2</span> 311 Call Data</h3>
 <p>The dataset we’ll use involves the 311 calls for service to the San Francisco Police Department. The 311 calls are for general non-emergency issues ranging from blocked sidewalks to graffiti to homeless concerns. Details <a href="https://support.datasf.org/help/311-case-data-faq">are here</a> If you’re curious, <a href="https://data.sfgov.org/Public-Safety/Police-Department-Calls-for-Service/hz9m-tj6z/data">here is the original dataset: 3,048,797 records</a></p>
 <p>This tutorial uses a subset of this data <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="cell">
@@ -348,8 +353,8 @@ $ year                     &lt;dbl&gt; 2019, 2019, 2019, 2019, 2019, 2019, 2019,
 </div>
 </div>
 </section>
-<section id="bar-charts" class="level3" data-number="15.0.3">
-<h3 data-number="15.0.3" class="anchored" data-anchor-id="bar-charts"><span class="header-section-number">15.0.3</span> Bar charts</h3>
+<section id="bar-charts" class="level3" data-number="16.0.3">
+<h3 data-number="16.0.3" class="anchored" data-anchor-id="bar-charts"><span class="header-section-number">16.0.3</span> Bar charts</h3>
 <p>The first kind of chart we’ll create is a simple bar chart.</p>
 <p>It’s a chart designed to show differences between things – the magnitude of one thing, compared to the next thing, and the next, and the next.</p>
 <p>So if we have thing, like a county, or a state, or a group name, and then a count of that group, we can make a bar chart.</p>
@@ -479,8 +484,8 @@ $ year                     &lt;dbl&gt; 2019, 2019, 2019, 2019, 2019, 2019, 2019,
 </div>
 </div>
 </section>
-<section id="line-charts" class="level2" data-number="15.1">
-<h2 data-number="15.1" class="anchored" data-anchor-id="line-charts"><span class="header-section-number">15.1</span> Line charts</h2>
+<section id="line-charts" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="line-charts"><span class="header-section-number">16.1</span> Line charts</h2>
 <p>Let’s look at how to make another common chart type that will help you understand patterns in your data.</p>
 <p>Line charts can show change over time. It works much the same as a bar chart, code wise, but instead of a weight, it uses a y. We’ll put the year on the x axis and count of loans, or <code>n</code>, on the y axis.</p>
 <div class="cell">
@@ -677,8 +682,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./r_aggregates_filters.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Mutuating, Aggregates, Filters</span></span>
+      <a href="./r-mutating.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Mutating data</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
