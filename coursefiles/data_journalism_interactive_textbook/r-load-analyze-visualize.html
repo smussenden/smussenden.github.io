@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.0.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,15 +11,10 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
-  vertical-align: middle;
-}
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -58,7 +53,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
+code span.bu { } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -71,7 +66,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -239,6 +234,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./r-join-bind.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Joins</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./appendix-math.html" class="sidebar-item-text sidebar-link">(APPENDIX) Appendix</a>
   </div>
 </li>
@@ -247,21 +247,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#install-software-to-grab-data" id="toc-install-software-to-grab-data" class="nav-link active" data-scroll-target="#install-software-to-grab-data"><span class="toc-section-number">12.0.1</span>  Install software to grab data</a></li>
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="toc-section-number">12.0.2</span>  Data</a></li>
-  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data"><span class="toc-section-number">12.0.3</span>  Import Data</a></li>
-  <li><a href="#explore-data" id="toc-explore-data" class="nav-link" data-scroll-target="#explore-data"><span class="toc-section-number">12.0.4</span>  Explore Data</a></li>
-  <li><a href="#navigation-tips" id="toc-navigation-tips" class="nav-link" data-scroll-target="#navigation-tips"><span class="toc-section-number">12.0.5</span>  Navigation Tips</a></li>
-  <li><a href="#dplyr" id="toc-dplyr" class="nav-link" data-scroll-target="#dplyr"><span class="toc-section-number">12.0.6</span>  Dplyr</a></li>
-  <li><a href="#find-your-news-organization" id="toc-find-your-news-organization" class="nav-link" data-scroll-target="#find-your-news-organization"><span class="toc-section-number">12.0.7</span>  Find Your News Organization</a></li>
-  <li><a href="#visualize" id="toc-visualize" class="nav-link" data-scroll-target="#visualize"><span class="toc-section-number">12.0.8</span>  Visualize</a></li>
-  <li><a href="#what-you-have-learned-so-far" id="toc-what-you-have-learned-so-far" class="nav-link" data-scroll-target="#what-you-have-learned-so-far"><span class="toc-section-number">12.0.9</span>  What You Have Learned So Far</a></li>
-  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions"><span class="toc-section-number">12.0.10</span>  Questions</a></li>
-  <li><a href="#tutorials" id="toc-tutorials" class="nav-link" data-scroll-target="#tutorials"><span class="toc-section-number">12.0.11</span>  Tutorials</a></li>
+  <li><a href="#install-software-to-grab-data" id="toc-install-software-to-grab-data" class="nav-link active" data-scroll-target="#install-software-to-grab-data"> <span class="header-section-number">12.0.1</span> Install software to grab data</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"> <span class="header-section-number">12.0.2</span> Data</a></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data"> <span class="header-section-number">12.0.3</span> Import Data</a></li>
+  <li><a href="#explore-data" id="toc-explore-data" class="nav-link" data-scroll-target="#explore-data"> <span class="header-section-number">12.0.4</span> Explore Data</a></li>
+  <li><a href="#navigation-tips" id="toc-navigation-tips" class="nav-link" data-scroll-target="#navigation-tips"> <span class="header-section-number">12.0.5</span> Navigation Tips</a></li>
+  <li><a href="#dplyr" id="toc-dplyr" class="nav-link" data-scroll-target="#dplyr"> <span class="header-section-number">12.0.6</span> Dplyr</a></li>
+  <li><a href="#find-your-news-organization" id="toc-find-your-news-organization" class="nav-link" data-scroll-target="#find-your-news-organization"> <span class="header-section-number">12.0.7</span> Find Your News Organization</a></li>
+  <li><a href="#visualize" id="toc-visualize" class="nav-link" data-scroll-target="#visualize"> <span class="header-section-number">12.0.8</span> Visualize</a></li>
+  <li><a href="#what-you-have-learned-so-far" id="toc-what-you-have-learned-so-far" class="nav-link" data-scroll-target="#what-you-have-learned-so-far"> <span class="header-section-number">12.0.9</span> What You Have Learned So Far</a></li>
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions"> <span class="header-section-number">12.0.10</span> Questions</a></li>
+  <li><a href="#tutorials" id="toc-tutorials" class="nav-link" data-scroll-target="#tutorials"> <span class="header-section-number">12.0.11</span> Tutorials</a></li>
   </ul>
 </nav>
     </div>
@@ -830,8 +830,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      let href = ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

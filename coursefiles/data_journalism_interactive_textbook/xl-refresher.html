@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.0.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,15 +11,10 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
-  vertical-align: middle;
-}
 </style>
 
 
@@ -176,6 +171,11 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./r-join-bind.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Joins</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./appendix-math.html" class="sidebar-item-text sidebar-link">(APPENDIX) Appendix</a>
   </div>
 </li>
@@ -184,11 +184,11 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#re-learning-excel-from-the-ground-up" id="toc-re-learning-excel-from-the-ground-up" class="nav-link active" data-scroll-target="#re-learning-excel-from-the-ground-up"><span class="toc-section-number">6.1</span>  Re-learning Excel from the ground up</a>
+  <li><a href="#re-learning-excel-from-the-ground-up" id="toc-re-learning-excel-from-the-ground-up" class="nav-link active" data-scroll-target="#re-learning-excel-from-the-ground-up"> <span class="header-section-number">6.1</span> Re-learning Excel from the ground up</a>
   <ul class="collapse">
   <li><a href="#the-spreadsheet-grid" id="toc-the-spreadsheet-grid" class="nav-link" data-scroll-target="#the-spreadsheet-grid">The spreadsheet grid</a></li>
   <li><a href="#mouse-shapes" id="toc-mouse-shapes" class="nav-link" data-scroll-target="#mouse-shapes">Mouse shapes</a></li>
@@ -198,13 +198,13 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#locking-in-headings" id="toc-locking-in-headings" class="nav-link" data-scroll-target="#locking-in-headings">Locking in headings</a></li>
   <li><a href="#formatting-tricks" id="toc-formatting-tricks" class="nav-link" data-scroll-target="#formatting-tricks">Formatting tricks</a></li>
   </ul></li>
-  <li><a href="#getting-started-with-a-dataset" id="toc-getting-started-with-a-dataset" class="nav-link" data-scroll-target="#getting-started-with-a-dataset"><span class="toc-section-number">6.2</span>  Getting started with a dataset</a>
+  <li><a href="#getting-started-with-a-dataset" id="toc-getting-started-with-a-dataset" class="nav-link" data-scroll-target="#getting-started-with-a-dataset"> <span class="header-section-number">6.2</span> Getting started with a dataset</a>
   <ul class="collapse">
   <li><a href="#first-steps" id="toc-first-steps" class="nav-link" data-scroll-target="#first-steps">First steps</a></li>
   <li><a href="#interview-your-data" id="toc-interview-your-data" class="nav-link" data-scroll-target="#interview-your-data">Interview your data</a></li>
   </ul></li>
-  <li><a href="#video-walkthrough" id="toc-video-walkthrough" class="nav-link" data-scroll-target="#video-walkthrough"><span class="toc-section-number">6.3</span>  Video walkthrough</a></li>
-  <li><a href="#keyboard-shortcuts" id="toc-keyboard-shortcuts" class="nav-link" data-scroll-target="#keyboard-shortcuts"><span class="toc-section-number">6.4</span>  Keyboard shortcuts</a></li>
+  <li><a href="#video-walkthrough" id="toc-video-walkthrough" class="nav-link" data-scroll-target="#video-walkthrough"> <span class="header-section-number">6.3</span> Video walkthrough</a></li>
+  <li><a href="#keyboard-shortcuts" id="toc-keyboard-shortcuts" class="nav-link" data-scroll-target="#keyboard-shortcuts"> <span class="header-section-number">6.4</span> Keyboard shortcuts</a></li>
   </ul>
 </nav>
     </div>
@@ -445,8 +445,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      let href = ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
