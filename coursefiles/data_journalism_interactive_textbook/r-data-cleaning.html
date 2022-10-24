@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./appendix-math.html" rel="next">
+<link href="./r-geographic-basics.html" rel="next">
 <link href="./r-join-bind.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -244,6 +244,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./r-geographic-basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Geographic data basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./appendix-math.html" class="sidebar-item-text sidebar-link">(APPENDIX) Appendix</a>
   </div>
 </li>
@@ -259,6 +264,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#wrong-type" id="toc-wrong-type" class="nav-link active" data-scroll-target="#wrong-type"> <span class="header-section-number">18.1</span> Wrong Type</a></li>
   <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data"> <span class="header-section-number">18.2</span> Missing Data</a></li>
   <li><a href="#gaps-in-data" id="toc-gaps-in-data" class="nav-link" data-scroll-target="#gaps-in-data"> <span class="header-section-number">18.3</span> Gaps in data</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources"> <span class="header-section-number">18.4</span> Resources</a></li>
   </ul>
 </nav>
     </div>
@@ -610,6 +616,19 @@ $ two_or_more_races_pop        &lt;dbl&gt; 81646, 85412, 88834, 91619, 119322, 6
 1             3368465.</code></pre>
 </div>
 </div>
+<p><strong>Question #1: </strong> Answer this question in English: Write in Elms</p>
+<p>You have a dataframe that contains population statistics for each of 24 counties in Maryland, and you want to group and summarize to determine the total population for the state.</p>
+<p>The first three rows of the data look like this:</p>
+<p>state | county | population Maryland | PG | 1000000 MD | Montgomery | 1100000 md | Baltimore city | 900000</p>
+<p>What tidyverse method described in this lab would you use to clean the state column so that the group and summarization works properly.</p>
+<p>You don’t need to write code, just explain in English on ELMS.</p>
+</section>
+<section id="resources" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="resources"><span class="header-section-number">18.4</span> Resources</h2>
+<ul>
+<li><p>The “<a href="https://r4ds.had.co.nz/relational-data.html">Relational data</a>” chapter in the R for Data Science textbook has details on exactly how a complex data set might fit together.</p></li>
+<li><p><a href="https://stat545.com/join-cheatsheet.html#left_joinsuperheroes-publishers">An example using a superheroes dataset</a>, from Stat 545 at the University of British Columbia</p></li>
+</ul>
 
 
 </section>
@@ -719,8 +738,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./appendix-math.html" class="pagination-link">
-        <span class="nav-page-text">(APPENDIX) Appendix</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./r-geographic-basics.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Geographic data basics</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
