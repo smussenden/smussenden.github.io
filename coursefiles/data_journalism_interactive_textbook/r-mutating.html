@@ -259,6 +259,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./r-scraping.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Scraping data with Rvest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./appendix-math.html" class="sidebar-item-text sidebar-link">(APPENDIX) Appendix</a>
   </div>
 </li>
@@ -299,33 +304,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Often the data will prompt questions that lack immediate answers. We’re continuing to work with the Baltimore median income data and we want to know how incomes changed over time by census tract and the percentage change.</p>
 <p>To do that in R, we can use <code>dplyr</code> and <code>mutate</code> to calculate new metrics in a new field using existing fields of data. That’s the essence of <code>mutate</code> - using the data you have to answer a new question.</p>
 <p>So first we’ll import the tidyverse so we can work with it.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
-✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-✔ readr   2.1.2      ✔ forcats 0.5.2 
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-</div>
-</div>
 <p>We’ll import a dataset of median household income in Baltimore for the 2010, 2016 and 2020 surveys. The data is in the data folder in this chapter’s pre-lab directory. We’ll use this to explore ways to create new information from existing data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"assets/data/baltcity_income_clean.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#working on this with your laptop, uncomment and use this code below</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#baltcity_income&lt;- read_csv("baltcity_income_clean.csv") %&gt;% </span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#  as.data.frame()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"assets/data/baltcity_income_clean.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#working on this with your laptop, uncomment and use this code below</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#baltcity_income&lt;- read_csv("baltcity_income_clean.csv") %&gt;% </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#  as.data.frame()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>One main question involves how the median income changed from 2010 to 2020. First, let’s add a column called <code>diff_2010_2020</code> to see how median income changed for each census tract. The code is pretty simple. Remember, with <code>summarize</code>, we used <code>n()</code> to count things. With <code>mutate</code>, we use very similar syntax to calculate a new value – a new column of data – using other values in our dataset.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Census, Neighborhood, x2010, x2020) <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Income =</span> (x2020<span class="sc">-</span>x2010))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Census, Neighborhood, x2010, x2020) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Income =</span> (x2020<span class="sc">-</span>x2010))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Census                          Neighborhood  x2010  x2020 Diff_Income
 1    101.00                                Canton  75938 128839       52901
@@ -528,6 +520,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 198 2804.03       Beechfield/Ten Hills/West Hills  51435  57582        6147
 199 2804.04         Allendale/Irvington/S. Hilton  43779  40946       -2833
 200 2805.00                   Oldtown/Middle East  11278  14304        3026</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(baltcity_income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Neighborhood x2010  x2016  x2020 Census       GEOID
+1                      Canton 75938 100985 128839    101 24510010100
+2 Patterson Park North &amp; East 58409  96171 130357    102 24510010200
+3                      Canton 77841 116875 151389    103 24510010300
+4                      Canton 70313  97153 114946    104 24510010400
+5                 Fells Point 86157  85986  98194    105 24510010500
+6                 Fells Point 60439  79063  95536    201 24510020100</code></pre>
 </div>
 </div>
 <p>Now we’ve got our <code>Diff_Income</code> column. Let’s provide some context and use a percentage change calculation to compare the gains. We’ll add a new column, <code>Diff_Pct_2020</code>. Remember the percentage change calculation is (New-Old)/Old</p>
@@ -940,13 +942,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 199  -0.064711391
 200   0.268309984</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(baltcity_income) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Neighborhood x2010  x2016  x2020 Census       GEOID
+1                      Canton 75938 100985 128839    101 24510010100
+2 Patterson Park North &amp; East 58409  96171 130357    102 24510010200
+3                      Canton 77841 116875 151389    103 24510010300
+4                      Canton 70313  97153 114946    104 24510010400
+5                 Fells Point 86157  85986  98194    105 24510010500
+6                 Fells Point 60439  79063  95536    201 24510020100</code></pre>
+</div>
 </div>
 <p>Look at <code>Diff_Pct_2020</code>. Do those numbers look like we expect them to? No.&nbsp;They’re a decimal expressed as a percentage. So let’s fix that by multiplying by 100. We’re also rounding the result to two digits from nine so it looks cleaner</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Census, Neighborhood, x2010, x2020) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Income =</span> (x2020<span class="sc">-</span>x2010)) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Pct_2020 =</span> <span class="fu">round</span>((x2020<span class="sc">-</span>x2010)<span class="sc">/</span>x2010<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Census, Neighborhood, x2010, x2020) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Income =</span> (x2020<span class="sc">-</span>x2010)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Pct_2020 =</span> <span class="fu">round</span>((x2020<span class="sc">-</span>x2010)<span class="sc">/</span>x2010<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Census                          Neighborhood  x2010  x2020 Diff_Income
 1    101.00                                Canton  75938 128839       52901
@@ -1351,14 +1363,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 199         -6.47
 200         26.83</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(baltcity_income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Neighborhood x2010  x2016  x2020 Census       GEOID
+1                      Canton 75938 100985 128839    101 24510010100
+2 Patterson Park North &amp; East 58409  96171 130357    102 24510010200
+3                      Canton 77841 116875 151389    103 24510010300
+4                      Canton 70313  97153 114946    104 24510010400
+5                 Fells Point 86157  85986  98194    105 24510010500
+6                 Fells Point 60439  79063  95536    201 24510020100</code></pre>
+</div>
 </div>
 <p>Now, let’s fix the ordering with arrange and sort descending on the percentage change column.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Census, Neighborhood, x2010, x2020) <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Income =</span> (x2020<span class="sc">-</span>x2010)) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Pct_2020 =</span> <span class="fu">round</span>((x2020<span class="sc">-</span>x2010)<span class="sc">/</span>x2010<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(Diff_Pct_2020))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Census, Neighborhood, x2010, x2020) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Income =</span> (x2020<span class="sc">-</span>x2010)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Pct_2020 =</span> <span class="fu">round</span>((x2020<span class="sc">-</span>x2010)<span class="sc">/</span>x2010<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(Diff_Pct_2020))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Census                          Neighborhood  x2010  x2020 Diff_Income
 1    402.00                   Downtown/Seton Hill  13229  43333       30104
@@ -1763,14 +1785,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 199            NA
 200            NA</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(baltcity_income) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Neighborhood x2010  x2016  x2020 Census       GEOID
+1                      Canton 75938 100985 128839    101 24510010100
+2 Patterson Park North &amp; East 58409  96171 130357    102 24510010200
+3                      Canton 77841 116875 151389    103 24510010300
+4                      Canton 70313  97153 114946    104 24510010400
+5                 Fells Point 86157  85986  98194    105 24510010500
+6                 Fells Point 60439  79063  95536    201 24510020100</code></pre>
+</div>
 </div>
 <p>So we know who the winners since the descending sort by <code>Diff_Pct_2020</code> shows us Census tracts by the highest percentage first. Now, which areas suffered the biggest declines in median income? We will copy the previous code and alter the arrange so it is ascending from the lowest value.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Census, Neighborhood, x2010, x2020) <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Income =</span> (x2020<span class="sc">-</span>x2010)) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Pct_2020 =</span> <span class="fu">round</span>((x2020<span class="sc">-</span>x2010)<span class="sc">/</span>x2010<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(Diff_Pct_2020)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>baltcity_income <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Census, Neighborhood, x2010, x2020) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Income =</span> (x2020<span class="sc">-</span>x2010)) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Diff_Pct_2020 =</span> <span class="fu">round</span>((x2020<span class="sc">-</span>x2010)<span class="sc">/</span>x2010<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(Diff_Pct_2020)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Census                          Neighborhood  x2010  x2020 Diff_Income
 1   1603.00       Sandtown-Winchester/Harlem Park  22292  13963       -8329
@@ -2175,42 +2207,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 199            NA
 200            NA</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(baltcity_income) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Neighborhood x2010  x2016  x2020 Census       GEOID
+1                      Canton 75938 100985 128839    101 24510010100
+2 Patterson Park North &amp; East 58409  96171 130357    102 24510010200
+3                      Canton 77841 116875 151389    103 24510010300
+4                      Canton 70313  97153 114946    104 24510010400
+5                 Fells Point 86157  85986  98194    105 24510010500
+6                 Fells Point 60439  79063  95536    201 24510020100</code></pre>
+</div>
 </div>
 <section id="using-mutate-to-clean-data" class="level3" data-number="15.0.1">
 <h3 data-number="15.0.1" class="anchored" data-anchor-id="using-mutate-to-clean-data"><span class="header-section-number">15.0.1</span> Using mutate to clean data</h3>
 <p>For this example, we’ll examine a dataset of loans small businesses obtained to stay afloat during the Covid-19 pandemic. It’s called the PPP loan database which stands for Paycheck Protection Program loans.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ppp_applications_md_small &lt;- read_csv("assets/data/ppp_applications_md.csv") %&gt;%</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  select(name, amount, city, servicing_lender_state)</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#write_csv(ppp_applications_md_small,"assets/data/ppp_applications_md_small.csv")</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>maryland_ppp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"assets/data/ppp_applications_md_small.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 195869 Columns: 4
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (3): name, city, servicing_lender_state
-dbl (1): amount
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#working on this with your laptop, uncomment and use this code below</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#maryland_ppp &lt;- read.csv("ppp_applications_md.csv")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>Take a look at the <code>city</code> column in our data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#View(maryland_ppp)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#View(maryland_ppp)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You’ll notice that there’s a mix of styles: “Baltimore” and “BALTIMORE” for example. R will think those are two different cities, and that will mean that any aggregates we create based on city won’t be accurate.</p>
 <p>So how can we fix that? Mutate is not just for math! And a function called <code>str_to_upper</code> that will convert a character column into all uppercase.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>maryland_ppp <span class="sc">%&gt;%</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper_city =</span> <span class="fu">str_to_upper</span>(city)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(city, upper_city, name, amount)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>maryland_ppp <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper_city =</span> <span class="fu">str_to_upper</span>(city)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(city, upper_city, name, amount)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 195,869 × 4
    city             upper_city       name                                 amount
@@ -2227,6 +2249,18 @@ dbl (1): amount
 10 Prince Frederick PRINCE FREDERICK HARVEST PRINCE FREDERICK LLC         2.42e5
 # … with 195,859 more rows</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(maryland_ppp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  name                            amount city            servicing_lender_state
+  &lt;chr&gt;                            &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;                 
+1 BAYWOOD HOTELS INC.            2000000 Columbia        MD                    
+2 PARTNERS ELECTRIC SERVICE INC. 1086257 Lanham          NY                    
+3 RP3 LLC                         787500 Bethesda        VA                    
+4 SUSHI KO CHEVY CHASE LLC.       655732 Chevy Chase     NY                    
+5 VILLAGE ACADEMY OF MARYLAND     469800 Capitol Heights WV                    
+6 GOSHEN HOUSE TRADING LLC        346500 Brentwood       NJ                    </code></pre>
+</div>
 </div>
 <p>Notice we kept the original data in <code>city</code> and transformed it in a new column, <code>upper_city</code>. Always a good practice to keep your original data intact in case you make a coding mistake or need to change the original for reference.</p>
 <p>We could do the same thing with the <code>address</code> column in order to standardize that for analysis, too.</p>
@@ -2242,17 +2276,17 @@ dbl (1): amount
 </ol>
 <p>We can create a new column that accounts for these possibilities and populate it using mutate and <code>case_when</code>, which is like an if/else statement but for more than two options.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>maryland_with_in_out <span class="ot">&lt;-</span> maryland_ppp <span class="sc">%&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">in_out =</span> <span class="fu">case_when</span>(</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        servicing_lender_state <span class="sc">==</span> <span class="st">'NA'</span> <span class="sc">~</span> <span class="st">"NA"</span>,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        servicing_lender_state <span class="sc">==</span> <span class="st">'MD'</span> <span class="sc">~</span> <span class="st">"IN"</span>,</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        servicing_lender_state <span class="sc">!=</span> <span class="st">'MD'</span> <span class="sc">~</span> <span class="st">"OUT"</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>maryland_with_in_out <span class="sc">%&gt;%</span> </span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, amount, servicing_lender_state, in_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>maryland_with_in_out <span class="ot">&lt;-</span> maryland_ppp <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">in_out =</span> <span class="fu">case_when</span>(</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        servicing_lender_state <span class="sc">==</span> <span class="st">'NA'</span> <span class="sc">~</span> <span class="st">"NA"</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        servicing_lender_state <span class="sc">==</span> <span class="st">'MD'</span> <span class="sc">~</span> <span class="st">"IN"</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        servicing_lender_state <span class="sc">!=</span> <span class="st">'MD'</span> <span class="sc">~</span> <span class="st">"OUT"</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>maryland_with_in_out <span class="sc">%&gt;%</span> </span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, amount, servicing_lender_state, in_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 195,869 × 4
    name                                        amount servicing_lender_…¹ in_out
@@ -2270,19 +2304,32 @@ dbl (1): amount
 # … with 195,859 more rows, and abbreviated variable name
 #   ¹​servicing_lender_state</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(maryland_with_in_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  name                            amount city            servicing_lend…¹ in_out
+  &lt;chr&gt;                            &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;            &lt;chr&gt; 
+1 BAYWOOD HOTELS INC.            2000000 Columbia        MD               IN    
+2 PARTNERS ELECTRIC SERVICE INC. 1086257 Lanham          NY               OUT   
+3 RP3 LLC                         787500 Bethesda        VA               OUT   
+4 SUSHI KO CHEVY CHASE LLC.       655732 Chevy Chase     NY               OUT   
+5 VILLAGE ACADEMY OF MARYLAND     469800 Capitol Heights WV               OUT   
+6 GOSHEN HOUSE TRADING LLC        346500 Brentwood       NJ               OUT   
+# … with abbreviated variable name ¹​servicing_lender_state</code></pre>
+</div>
 </div>
 <p>We can then use our new <code>in_out</code> column in group_by statements to make summarizing easier.</p>
 <p>In this case there are no Maryland loans where <code>servicing_lender_state</code> has a value of ‘NA’, but you should never assume that will be the case for a dataset. If you know that the only options are the lender is in Maryland or is outside it, you can rewrite the previous code as an if/else statement:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>maryland_with_in_out <span class="ot">&lt;-</span> maryland_ppp <span class="sc">%&gt;%</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">in_out =</span> <span class="fu">if_else</span>(</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>        servicing_lender_state <span class="sc">==</span> <span class="st">'MD'</span>, <span class="st">"IN"</span>, <span class="st">"OUT"</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>maryland_with_in_out <span class="sc">%&gt;%</span> </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, amount, servicing_lender_state, in_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>maryland_with_in_out <span class="ot">&lt;-</span> maryland_ppp <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">in_out =</span> <span class="fu">if_else</span>(</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        servicing_lender_state <span class="sc">==</span> <span class="st">'MD'</span>, <span class="st">"IN"</span>, <span class="st">"OUT"</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>maryland_with_in_out <span class="sc">%&gt;%</span> </span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, amount, servicing_lender_state, in_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 195,869 × 4
    name                                        amount servicing_lender_…¹ in_out
@@ -2297,6 +2344,24 @@ dbl (1): amount
  8 BOBS OVERHEAD DOOR REPAIR AND SERVICE INC  317504  MD                  IN    
  9 PARENTS FOR MONTESSORI EDUCATION INC       284185  MD                  IN    
 10 HARVEST PRINCE FREDERICK LLC               242094. MO                  OUT   
+# … with 195,859 more rows, and abbreviated variable name
+#   ¹​servicing_lender_state</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>maryland_with_in_out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 195,869 × 5
+   name                                        amount city        servi…¹ in_out
+   &lt;chr&gt;                                        &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt; 
+ 1 BAYWOOD HOTELS INC.                       2000000  Columbia    MD      IN    
+ 2 PARTNERS ELECTRIC SERVICE INC.            1086257  Lanham      NY      OUT   
+ 3 RP3 LLC                                    787500  Bethesda    VA      OUT   
+ 4 SUSHI KO CHEVY CHASE LLC.                  655732  Chevy Chase NY      OUT   
+ 5 VILLAGE ACADEMY OF MARYLAND                469800  Capitol He… WV      OUT   
+ 6 GOSHEN HOUSE TRADING LLC                   346500  Brentwood   NJ      OUT   
+ 7 WEAVER BOAT WORKS                          330700  Tracys Lan… MD      IN    
+ 8 BOBS OVERHEAD DOOR REPAIR AND SERVICE INC  317504  Essex       MD      IN    
+ 9 PARENTS FOR MONTESSORI EDUCATION INC       284185  Annapolis   MD      IN    
+10 HARVEST PRINCE FREDERICK LLC               242094. Prince Fre… MO      OUT   
 # … with 195,859 more rows, and abbreviated variable name
 #   ¹​servicing_lender_state</code></pre>
 </div>
